@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Employees {
+
+    @OneToMany (mappedBy = "employees", fetch = FetchType.EAGER)
+    private List<Cars> cars;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
