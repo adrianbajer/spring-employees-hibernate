@@ -1,11 +1,13 @@
 package spring.hibernate;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 //    Grupa 2 tworzy repozytorium publiczne na githubie i daje dostęp swojemu partnerowi/partnerce
 //    Grupa 1 na zajęcia 25.01 Przepina nasz projekt na encje hibernate
@@ -20,7 +22,8 @@ import java.util.List;
 public class Cars {
 
     @ManyToOne
-    @JoinColumn(name = "Employees")
+    @JoinColumn(name = "EmployeeId")
+    @NonNull
     private Employees employees;
 
     @Id
@@ -28,11 +31,7 @@ public class Cars {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "Employee_ID")
-    @NonNull
-    private int employee_Id;
-
-    @Column(name = "Name")
+    @Column(name = "Brand")
     @NonNull
     private String name;
 
@@ -47,5 +46,17 @@ public class Cars {
 
 
     public Cars() {
+    }
+
+    // toString wygenerowane przez Lombok zapętlało się z toString z Employee i dawało StackOverFlow exception
+    @Override
+    public String toString() {
+        return "Cars{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", model='" + model + '\'' +
+                ", registrationDate=" + registrationDate + '\'' +
+                ", employee's id='" + employees.getId() +
+                '}';
     }
 }

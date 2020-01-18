@@ -2,9 +2,11 @@ package spring.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 public class EmployeeDao {
 
     public void saveEmployee(Employees employee) {
