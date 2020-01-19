@@ -2,11 +2,11 @@ package spring.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Controller
+@Component
 public class EmployeeDao {
 
     public void saveEmployee(Employees employee) {
@@ -29,11 +29,31 @@ public class EmployeeDao {
         }
     }
 
+    public Employees getEmployeeById(Integer employee_id) {
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            return session.get(Employees.class, employee_id);
+        }
+    }
+
     public void updateEmployees(Employees employee) {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.update(employee);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEmployees(Employees employee) {
+        Transaction transaction = null;
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(employee);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

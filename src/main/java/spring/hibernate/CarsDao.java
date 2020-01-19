@@ -2,11 +2,12 @@ package spring.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Controller
+@Component
 public class CarsDao {
 
     public void saveCar(Cars car) {

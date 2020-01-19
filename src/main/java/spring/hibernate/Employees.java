@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Employees")
@@ -15,7 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Employees {
 
-    @OneToMany (mappedBy = "employees", fetch = FetchType.EAGER)
+    // usunięcie pracownika spowoduje usunięcie samochodu
+    @OneToMany(mappedBy = "employees", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Cars> cars;
 
     @Id
@@ -23,13 +23,13 @@ public class Employees {
     @Column(name = "ID")
     private int id;
 
-    @Column(name = "LastName")
-    @NonNull
-    private String lastName;
-
     @Column(name = "FirstName")
     @NonNull
     private String firstName;
+
+    @Column(name = "LastName")
+    @NonNull
+    private String lastName;
 
     @Column(name = "Address")
     @NonNull

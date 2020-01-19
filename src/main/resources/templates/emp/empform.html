@@ -11,12 +11,25 @@
 <div class="container">
     <h2>Employee Form</h2>
     <div class="form-group">
-        <form action="#" class="form-group" th:action="@{/save_emp}" th:object="${emp}" method="post">
+        <form action="#" class="form-group" th:action="@{/save_emp}" th:object="${employee}" method="post">
             <input type="hidden" th:field="*{id}">
-            <input type="text" class="form-control" th:field="*{name}" placeholder="Name"><br>
-            <input type="text" class="form-control" th:field="*{salary}" placeholder="Salary"><br>
-            <input type="text" class="form-control" th:field="*{designation}" placeholder="Designation"><br>
-            <input type="submit" class="btn btn-danger">
+            <label>First Name <input type="text" class="form-control" th:field="*{firstName}" placeholder="Jane"
+                                     required></label><br>
+            <label>First Name <input type="text" class="form-control" th:field="*{lastName}" placeholder="Smith"
+                                     required></label><br>
+            <label>Address <input type="text" class="form-control" th:field="*{address}" placeholder="15, 5th Avenue"
+                                  required></label><br>
+            <label>City <input type="text" class="form-control" th:field="*{city}" placeholder="Warsaw"
+                               required></label><br>
+            <label>Salary <input type="number" class="form-control" th:field="*{salary}" required></label><br>
+            <label>Age <input type="number" class="form-control" th:field="*{age}" required></label><br>
+            <label>Start of the Job <input type="text" class="form-control" th:field="*{startJobDate}"
+                                           placeholder="dd-MM-yyy" required></label><br>
+            <label>Benefit (1 for "yes", 0 for "no")<input type="number" class="form-control" th:field="*{benefit}"
+                                                           min="0" max="1" required></label><br>
+            <label>Email <input type="text" class="form-control" th:field="*{email}" placeholder="jane@smith.com"
+                                required></label><br>
+            <input type="submit" class="btn btn-danger" value="Save">
         </form>
         <hr>
     </div>

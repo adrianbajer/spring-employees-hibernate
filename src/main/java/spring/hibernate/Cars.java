@@ -21,7 +21,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Cars {
 
-    @ManyToOne
+    // usunięcie samochodu nie spowoduje usunięcia pracownika
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "EmployeeId")
     @NonNull
     private Employees employees;
