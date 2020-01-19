@@ -34,7 +34,7 @@ public class Cars {
 
     @Column(name = "Brand")
     @NonNull
-    private String name;
+    private String brand;
 
     @Column(name = "Model")
     @NonNull
@@ -54,9 +54,9 @@ public class Cars {
     public String toString() {
         return "Cars{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
-                ", registrationDate=" + registrationDate + '\'' +
+                ", registration date=" + registrationDate + '\'' +
                 ", employee's id='" + employees.getId() +
                 '}';
     }

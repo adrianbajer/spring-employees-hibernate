@@ -22,9 +22,9 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/empform", method = RequestMethod.GET)
-    public String showform(Model model) {
+    public String showForm(Model model) {
         model.addAttribute("employee", new Employees());
-        return "emp/empform";
+        return "emp/add_employee_form";
     }
 
     @RequestMapping(value = "/save_emp")
@@ -39,22 +39,21 @@ public class EmployeeController {
 
     @RequestMapping(value = "/delete_emp", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
-        Integer idToInteger = Integer.parseInt((employee_id));
-        Employees employeeToDelete = employeeDao.getEmployeeById(idToInteger);
-        employeeDao.deleteEmployees(employeeToDelete);
+        Employees employee = getEmployeesById(Integer.parseInt(employee_id));
+        employeeDao.deleteEmployees(employee);
         return new ModelAndView("redirect:/viewemp");
     }
 
     @RequestMapping(value = "/edit_emp", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
-        return new ModelAndView("emp/empform", "employee", employee);
+        return new ModelAndView("emp/add_employee_form", "employee", employee);
     }
 
     @RequestMapping("/viewemp")
     public ModelAndView viewemp(Model model) {
         List<Employees> list = employeeDao.getEmployees();
-        return new ModelAndView("emp/viewemp", "list", list);
+        return new ModelAndView("emp/all_employees_list", "list", list);
     }
 
     private Employees getEmployeesById(@RequestParam int id) {

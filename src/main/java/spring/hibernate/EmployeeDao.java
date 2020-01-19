@@ -29,12 +29,6 @@ public class EmployeeDao {
         }
     }
 
-    public Employees getEmployeeById(Integer employee_id) {
-        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
-            return session.get(Employees.class, employee_id);
-        }
-    }
-
     public void updateEmployees(Employees employee) {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
