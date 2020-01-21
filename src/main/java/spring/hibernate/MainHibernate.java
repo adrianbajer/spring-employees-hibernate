@@ -19,7 +19,7 @@ public class MainHibernate {
 
 
         CarsDao carsDao = new CarsDao();
-        Cars car = new Cars(employee, "Subaru", "Forester", new Date());
+        Cars car = new Cars("Subaru", "Forester", new Date());
         carsDao.saveCar(car);
         List<Cars> carsList = carsDao.getCars();
 

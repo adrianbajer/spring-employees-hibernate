@@ -14,12 +14,15 @@
         <form action="#" class="form-group" th:action="@{/car/save}" th:object="${car}" method="post">
             <input type="hidden" th:field="*{id}">
             <label>Car User
-                <select th:field="*{employees}" class="form-control" id="employees" name="employees" required>
+                <select class="form-control" required>
+                    <!--                    <select th:field="*{employees}" class="form-control" id="employees.id" name="employees.id" required>-->
                     <option value="default">Select employee</option>
                     <option th:each="employees : ${employeesList}"
                             th:value="${employees}"
-                            th:text="${employees.firstName}+' '+${employees.lastName}"></option>
-                    <input type="hidden" th:name="employees.id" th:value="${employees.id}">
+                            th:text="${employees.firstName}+' '+${employees.lastName}">
+                        <!--                        <input type="hidden" th:name="employees.id" th:value="${employees.id}">-->
+                    </option>
+
                 </select>
             </label><br>
             <label>Brand <input type="text" class="form-control" th:field="*{brand}" placeholder="Fiat"

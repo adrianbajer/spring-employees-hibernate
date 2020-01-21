@@ -21,10 +21,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class Cars {
 
-    // usunięcie samochodu nie spowoduje usunięcia pracownika
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "EmployeeId")
-    @NonNull
+    //@NonNull
+    // zakomentowane żeby można było dodawać samochód bez pracownika
+    // (problem z dropdown list w formularzu dodawania samochodu)
     private Employees employees;
 
     @Id
@@ -49,6 +50,7 @@ public class Cars {
     public Cars() {
     }
 
+
     // toString wygenerowane przez Lombok zapętlało się z toString z Employee i dawało StackOverFlow exception
     @Override
     public String toString() {
@@ -57,7 +59,7 @@ public class Cars {
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", registration date=" + registrationDate + '\'' +
-                ", employee's id='" + employees.getId() +
+                //             ", employee's id='" + employees.getId() +
                 '}';
     }
 }
