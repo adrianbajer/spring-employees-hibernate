@@ -12,10 +12,12 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Employees {
+public class Employees implements HibernateEntity {
 
     // usunięcie pracownika spowoduje usunięcie samochodu
-    @OneToMany(mappedBy = "employees", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER)
+    @ToString.Exclude // żeby nie wywalało stackoverflow exception
+    @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private List<Cars> cars;
 
     @Id
@@ -57,9 +59,23 @@ public class Employees {
     private int benefit;
 
     @Column(name = "Email")
-    @Getter @Setter
+    @Getter
+    @Setter
     private String email;
 
-    public Employees(){}
+    public Employees() {
+    }
 
+
+    public Employees(int id, String firstName, String lastName, String address, String city, int age, int salary, Date startJobDate, int benefit) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.age = age;
+        this.salary = salary;
+        this.startJobDate = startJobDate;
+        this.benefit = benefit;
+    }
 }

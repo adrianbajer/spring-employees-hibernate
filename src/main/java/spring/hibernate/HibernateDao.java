@@ -2,18 +2,20 @@ package spring.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-@Component
-public class EmployeeDao {
+@Repository
+public class HibernateDao {
 
-    public void saveEmployee(Employees employee) {
+    public void saveEntity(HibernateEntity hibernateEntity) {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(employee);
+            session.save(hibernateEntity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -23,17 +25,24 @@ public class EmployeeDao {
         }
     }
 
-    public List<Employees> getEmployees() {
-        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
-            return session.createQuery("from Employees", Employees.class).list();
-        }
+
+    // ta metoda sprawdza jaki jest typ danego obiektu z tablicy (w naszym przypadku czy to jest car czy employee)
+    public <T> List<T> get(Class<T> type) {
+        Session session = HibernateConfig.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(type);
+        criteria.from(type);
+        List<T> data = session.createQuery(criteria).getResultList();
+        tx.commit();
+        return data;
     }
 
-    public void updateEmployees(Employees employee) {
+    public void updateEntity(HibernateEntity hibernateEntity) {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(employee);
+            session.update(hibernateEntity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -43,11 +52,11 @@ public class EmployeeDao {
         }
     }
 
-    public void deleteEmployees(Employees employee) {
+    public void deleteEntity(HibernateEntity hibernateEntity) {
         Transaction transaction = null;
         try (Session session = HibernateConfig.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.delete(employee);
+            session.delete(hibernateEntity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -56,4 +65,5 @@ public class EmployeeDao {
             e.printStackTrace();
         }
     }
+
 }

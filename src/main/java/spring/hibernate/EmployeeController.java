@@ -15,76 +15,97 @@ import java.util.List;
 
 @Controller
 public class EmployeeController {
-    //@Autowired musi być zakomentowane żeby kontroler przełączał się na listę kiedy baza jest niedostępna
-    private EmployeeDao employeeDao;
-    private List<Employees> list;
+    private List<Employees> employeesList;
+    private HibernateDao hibernateDao;
 
     public EmployeeController() {
         try {
-            employeeDao = new EmployeeDao();
-            list = employeeDao.getEmployees();
+            hibernateDao = new HibernateDao();
+            DataSource.supplyDatabase();
+            employeesList = hibernateDao.get(Employees.class);
         } catch (NullPointerException exception) {
             System.out.println("No connection with database");
             exception.getMessage();
-            list = new ArrayList<>();
-            Employees employee1 = new Employees("Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
-            Employees employee2 = new Employees("Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
-            Employees employee3 = new Employees("Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
-            list.addAll(Arrays.asList(employee1, employee2, employee3));
+            employeesList = new ArrayList<>();
+            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
+            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
+            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
+            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
         }
     }
 
-    //metoda działa i z listą i z bazą danych
     @RequestMapping("/")
     public String indexGet() {
         return "emp/index";
     }
 
-    //metoda działa i z listą i z bazą danych
     @RequestMapping(value = "/empform", method = RequestMethod.GET)
     public String showForm(Model model) {
         model.addAttribute("employee", new Employees());
         return "emp/add_employee_form";
     }
 
-    //metoda działa tylko z bazą danych
     @RequestMapping(value = "/save_emp")
     public ModelAndView save(@ModelAttribute(value = "employee") Employees employee) {
         if (employee.getId() == 0) {
-            employeeDao.saveEmployee(employee);
+            // przy wersji z bazą dodaje ich podwójnie, zastanowić się nad tym (może porównać tych dwóch pracowników
+            // przed dodaniem do employees list?
+            addEmployeeToDatabase(employee);
+            employee.setId(employeesList.size());
+            employeesList.add(employee);
         } else {
-            employeeDao.updateEmployees(employee);
+            updateEmployeeInDatabase(employee);
+            employeesList.set(employee.getId() - 1, employee);
         }
         return new ModelAndView("redirect:/viewemp");
     }
 
-    //metoda działa tylko z bazą danych
     @RequestMapping(value = "/delete_emp", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
-        employeeDao.deleteEmployees(employee);
+        deleteEmployeeFromDatabase(employee);
+        employeesList.remove(employee);
+        //hibernateDao.deleteEntity(employee);
         return new ModelAndView("redirect:/viewemp");
     }
 
-    //metoda działa i z listą i z bazą danych
     @RequestMapping(value = "/edit_emp", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
         return new ModelAndView("emp/add_employee_form", "employee", employee);
     }
 
-    // jeśli usunę odwołanie do employeeDao w tej metodzie, to nie będzie się updatowała lista pracowników na stronie
-    // głównej przy dodaniu kolejnego pracownika. więc metoda nie działa z listą
     @RequestMapping("/viewemp")
     public ModelAndView viewemp(Model model) {
-        List<Employees> list = employeeDao.getEmployees();
-        return new ModelAndView("emp/all_employees_list", "list", list);
+        return new ModelAndView("emp/all_employees_list", "list", employeesList);
     }
 
-    //metoda działa i z listą i z bazą danych
     private Employees getEmployeesById(@RequestParam int id) {
-        //List<Employees> list = employeeDao.getEmployees();
-        return list.stream().filter(f -> f.getId() == id).findFirst().get();
+        return employeesList.stream().filter(f -> f.getId() == id).findFirst().get();
+    }
+
+    private void addEmployeeToDatabase(Employees employees) {
+        try {
+            hibernateDao.saveEntity(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateEmployeeInDatabase(Employees employees) {
+        try {
+            hibernateDao.updateEntity(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteEmployeeFromDatabase(Employees employees) {
+        try {
+            hibernateDao.deleteEntity(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 }

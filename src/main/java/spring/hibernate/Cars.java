@@ -1,9 +1,6 @@
 package spring.hibernate;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,13 +16,13 @@ import java.util.Date;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Cars {
+public class Cars implements HibernateEntity {
 
     @ManyToOne
-    @JoinColumn(name = "EmployeeId")
-    //@NonNull
-    // zakomentowane żeby można było dodawać samochód bez pracownika
-    // (problem z dropdown list w formularzu dodawania samochodu)
+    @JoinColumn(name = "EmployeeId") // można dać nullable = false i to będzie odpowiednik adnotacji @NonNull
+    @ToString.Exclude // żeby nie wywalało stackoverflow exception
+    @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba w świetle equals i hashCode
+    @NonNull
     private Employees employees;
 
     @Id
@@ -50,16 +47,4 @@ public class Cars {
     public Cars() {
     }
 
-
-    // toString wygenerowane przez Lombok zapętlało się z toString z Employee i dawało StackOverFlow exception
-    @Override
-    public String toString() {
-        return "Cars{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", registration date=" + registrationDate + '\'' +
-                //             ", employee's id='" + employees.getId() +
-                '}';
-    }
 }

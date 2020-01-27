@@ -29,7 +29,7 @@
             <tbody>
             <tr class="result" data-th-each="car : ${carsList}">
                 <td th:text="${car.id}"></td>
-                <td th:text="${car.getEmployees().getFirstName() + car.getEmployees().getLastName()}"></td>
+                <td th:text="${car.getEmployees().getFirstName() + ' ' + car.getEmployees().getLastName()}"></td>
                 <td th:text="${car.brand}"></td>
                 <td th:text="${car.model}"></td>
                 <td th:text="${car.registrationDate}"></td>

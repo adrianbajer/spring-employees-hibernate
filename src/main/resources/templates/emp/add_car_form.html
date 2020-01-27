@@ -14,23 +14,20 @@
         <form action="#" class="form-group" th:action="@{/car/save}" th:object="${car}" method="post">
             <input type="hidden" th:field="*{id}">
             <label>Car User
-                <select class="form-control" required>
-                    <!--                    <select th:field="*{employees}" class="form-control" id="employees.id" name="employees.id" required>-->
+                <select class="form-control" name="item.id" required>
                     <option value="default">Select employee</option>
-                    <option th:each="employees : ${employeesList}"
-                            th:value="${employees}"
-                            th:text="${employees.firstName}+' '+${employees.lastName}">
-                        <!--                        <input type="hidden" th:name="employees.id" th:value="${employees.id}">-->
-                    </option>
-
+                    <!--                    musiałam zmienić nazwę pozycji w employeesList z employee na item, bo spring usiłował na podstawie samej nazwy
+                                            dowiązywać tę wartość do beana car i wywalał błąd że typy się nie zgadzają-->
+                    <option th:each="item : ${employeesList}"
+                            th:value="${item.id}"
+                            th:text="${item.firstName} + ' ' + ${item.lastName}"></option>
                 </select>
             </label><br>
             <label>Brand <input type="text" class="form-control" th:field="*{brand}" placeholder="Fiat"
                                 required></label><br>
             <label>Model <input type="text" class="form-control" th:field="*{model}" placeholder="126" required></label><br>
-            <label>Registration Date <input type="text" class="form-control" th:field="*{registrationDate}"
-                                            placeholder="dd-MM-yyy"
-                                            required></label><br>
+            <label>Registration Date <input type="date" class="form-control" id="date" name="date" required></label><br>
+
             <input type="submit" class="btn btn-danger" value="Save">
         </form>
         <hr>
