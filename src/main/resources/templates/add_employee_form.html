@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Employee Add Form</title>
-    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css">
-    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}" type="text/css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" type="text/css">
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}" type="text/css">
 </head>
 <body>
 <hr>
 <div class="container">
     <h2>Employee Form</h2>
     <div class="form-group">
-        <form action="#" class="form-group" th:action="@{/save_emp}" th:object="${employee}" method="post">
+        <form action="#" class="form-group" th:action="@{/saveEmployee}" th:object="${employee}" method="post">
             <input type="hidden" th:field="*{id}">
             <label>First Name <input type="text" class="form-control" th:field="*{firstName}" placeholder="Jane"
                                      required></label><br>
@@ -22,7 +22,8 @@
             <label>City <input type="text" class="form-control" th:field="*{city}" placeholder="Warsaw"
                                required></label><br>
             <label>Salary <input type="number" class="form-control" th:field="*{salary}" required></label><br>
-            <label>Age <input type="number" class="form-control" th:field="*{age}" required></label><br>
+            <label>Age <input type="number" class="form-control" th:field="*{age}" min="15" max="100"
+                              required></label><br>
             <label>Start of the Job <input type="text" class="form-control" th:field="*{startJobDate}"
                                            placeholder="dd-MM-yyy" required/>
                 <!--                type="date"-->

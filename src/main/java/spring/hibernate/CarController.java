@@ -1,6 +1,5 @@
 package spring.hibernate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,13 +20,19 @@ import java.util.List;
 public class CarController {
     private List<Cars> carsList;
     private List<Employees> employeesList;
-    @Autowired
     private HibernateDao hibernateDao;
+
+    //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
+    // @ManyToMany oraz dorobić do niej odpowiedni formularz.
+    //Dodaje przycisk który umożliwi przywrócenie bazy danych do punktu początkowego oraz wystawia aplikacje na heroku.
+    // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
+    // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
 
     public CarController() {
         try {
             hibernateDao = new HibernateDao();
             DataSource.supplyDatabase();
+            //może przez to ponowne wywołanie employees list dodają mi się podwójnie pracownicy do listy?
             employeesList = hibernateDao.get(Employees.class);
             carsList = hibernateDao.get(Cars.class);
         } catch (NullPointerException exception) {
@@ -41,26 +46,22 @@ public class CarController {
             employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
 
             carsList = new ArrayList<>();
-            Cars car1 = new Cars(employee1, "Fiat", "126p", new Date());
-            Cars car2 = new Cars(employee2, "Honda", "Civic", new Date());
+            Cars car1 = new Cars(employee1, 1, "Fiat", "126p", new Date());
+            Cars car2 = new Cars(employee2, 2, "Honda", "Civic", new Date());
             carsList.addAll(Arrays.asList(car1, car2));
-
-
         }
     }
 
     @RequestMapping("/seeAll")
     public ModelAndView showCarList(Model model) {
-        //List<Cars> carsList = hibernateDao.get(Cars.class);
-        return new ModelAndView("emp/all_cars_list", "carsList", carsList);
+        return new ModelAndView("/all_cars_list", "carsList", carsList);
     }
 
     @RequestMapping(value = "/getForm", method = RequestMethod.GET)
     public String showForm(Model model) {
         model.addAttribute("car", new Cars());
-        model.addAttribute("employeeToSet", new Employees());
         model.addAttribute("employeesList", employeesList);
-        return "emp/add_car_form";
+        return "/add_car_form";
     }
 
     @RequestMapping(value = "/save")
@@ -81,30 +82,56 @@ public class CarController {
         }
 
         if (car.getId() == 0) {
-            hibernateDao.saveEntity(car);
+            addCarToDatabase(car);
+            car.setId(carsList.size());
+            carsList.add(car);
         } else {
-            hibernateDao.updateEntity(car);
+            updateCarInDatabase(car);
+            carsList.set(car.getId() - 1, car);
         }
         return new ModelAndView("redirect:/car/seeAll");
     }
 
-    //    //metoda działa tylko z bazą danych
     @RequestMapping(value = "/delete_car", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
-        hibernateDao.deleteEntity(car);
+        deleteCarFromDatabase(car);
+        carsList.remove(car);
         return new ModelAndView("redirect:/car/seeAll");
     }
 
     @RequestMapping(value = "/edit_car", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
-        return new ModelAndView("emp/add_car_form", "car", car);
+        return new ModelAndView("/add_car_form", "car", car);
     }
 
     private Cars getCarById(@RequestParam int id) {
-        //List<Cars> list = hibernateDao.get(Cars.class);
         return carsList.stream().filter(f -> f.getId() == id).findFirst().get();
+    }
+
+    private void addCarToDatabase(Cars car) {
+        try {
+            hibernateDao.saveEntity(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCarInDatabase(Cars car) {
+        try {
+            hibernateDao.updateEntity(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCarFromDatabase(Cars car) {
+        try {
+            hibernateDao.deleteEntity(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 }

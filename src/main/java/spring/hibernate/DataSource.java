@@ -6,10 +6,6 @@ public class DataSource {
 
     public static boolean isDatabaseConnection = Boolean.FALSE;
 
-    public static void main(String[] args) {
-        supplyDatabase();
-    }
-
     public static void supplyDatabase() {
         HibernateDao hibernateDao = null;
 
