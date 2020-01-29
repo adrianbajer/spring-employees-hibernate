@@ -32,7 +32,6 @@ public class CarController {
         try {
             hibernateDao = new HibernateDao();
             DataSource.supplyDatabase();
-            //może przez to ponowne wywołanie employees list dodają mi się podwójnie pracownicy do listy?
             employeesList = hibernateDao.get(Employees.class);
             carsList = hibernateDao.get(Cars.class);
         } catch (NullPointerException exception) {

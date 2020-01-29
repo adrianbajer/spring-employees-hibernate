@@ -22,6 +22,8 @@ public class Employees implements HibernateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude // żeby móc sprawdzić czy nie jest dodawany taki sam pracownik tylko z nowym id
     @Column(name = "ID")
     private int id;
 
@@ -43,6 +45,7 @@ public class Employees implements HibernateEntity {
 
     @Column(name = "Salary")
     @NonNull
+    @EqualsAndHashCode.Exclude // żeby móc sprawdzić czy nie jest dodawany taki sam pracownik tylko z nową pensją
     private int salary;
 
     @Column(name = "Age")
@@ -52,10 +55,12 @@ public class Employees implements HibernateEntity {
     @Column(name = "StartJobDate")
     @NonNull
     @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @EqualsAndHashCode.Exclude // żeby móc sprawdzić czy nie jest dodawany taki sam pracownik tylko z nową datą
     private Date startJobDate;
 
     @Column(name = "Benefit")
     @NonNull
+    @EqualsAndHashCode.Exclude // żeby móc sprawdzić czy nie jest dodawany taki sam pracownik tylko z nowym benefitem
     private int benefit;
 
     @Column(name = "Email")

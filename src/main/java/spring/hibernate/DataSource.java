@@ -1,6 +1,9 @@
 package spring.hibernate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class DataSource {
 
@@ -25,13 +28,15 @@ public class DataSource {
         Employees employee6 = new Employees("Genowefa", "Pigwa", "Rybickiego 128", "Zamość", 6000, 29, new Date(), 1);
         Employees employee7 = new Employees("Piotr", "Złomczyński", "Szucha 8", "Warszawa", 1500, 18, new Date(), 0);
 
-        hibernateDao.saveEntity(employee1);
-        hibernateDao.saveEntity(employee2);
-        hibernateDao.saveEntity(employee3);
-        hibernateDao.saveEntity(employee4);
-        hibernateDao.saveEntity(employee5);
-        hibernateDao.saveEntity(employee6);
-        hibernateDao.saveEntity(employee7);
+        // sprawdzamy, czy dane są już w bazie czy nie
+        List<Employees> verificationList = hibernateDao.get(Employees.class);
+
+        List<Employees> listToAdd = new ArrayList<>(Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6, employee7));
+        listToAdd.removeAll(verificationList);
+
+        for (Employees employee : listToAdd) {
+            hibernateDao.saveEntity(employee);
+        }
 
         Cars car1 = new Cars(employee6, "Subaru", "Forester", new Date());
         Cars car2 = new Cars(employee2, "Ford", "Fiesta", new Date());
