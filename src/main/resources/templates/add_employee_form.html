@@ -24,9 +24,8 @@
             <label>Salary <input type="number" class="form-control" th:field="*{salary}" required></label><br>
             <label>Age <input type="number" class="form-control" th:field="*{age}" min="15" max="100"
                               required></label><br>
-            <label>Start of the Job <input type="text" class="form-control" th:field="*{startJobDate}"
+            <label>Start of the Job <input type="date" class="form-control" th:field="*{startJobDate}"
                                            placeholder="dd-MM-yyy" required/>
-                <!--                type="date"-->
             </label><br>
             <label>Benefit (1 for "yes", 0 for "no")<input type="number" class="form-control" th:field="*{benefit}"
                                                            min="0" max="1" required></label><br>

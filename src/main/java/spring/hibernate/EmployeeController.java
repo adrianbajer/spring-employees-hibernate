@@ -56,6 +56,7 @@ public class EmployeeController {
             addEmployeeToDatabase(employee);
             employee.setId(employeesList.size());
             employeesList.add(employee);
+            // todo zmienić tak żeby móc pobierać datę z kalendarza
         } else {
             updateEmployeeInDatabase(employee);
             employeesList.set(employee.getId() - 1, employee);

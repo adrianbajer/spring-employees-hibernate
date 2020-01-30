@@ -22,12 +22,6 @@ public class CarController {
     private List<Employees> employeesList;
     private HibernateDao hibernateDao;
 
-    //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
-    // @ManyToMany oraz dorobić do niej odpowiedni formularz.
-    //Dodaje przycisk który umożliwi przywrócenie bazy danych do punktu początkowego oraz wystawia aplikacje na heroku.
-    // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
-    // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
-
     public CarController() {
         try {
             hibernateDao = new HibernateDao();

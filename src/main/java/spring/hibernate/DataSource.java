@@ -50,6 +50,17 @@ public class DataSource {
         hibernateDao.saveEntity(car4);
         hibernateDao.saveEntity(car5);
 
+        List<Employees> listForPrinter1 = listToAdd;
+        List<Employees> listForPrinter2 = new ArrayList<>(Arrays.asList(employee1, employee6, employee7));
+
+        Printers printer1 = new Printers(listForPrinter1, "Hewlett Packard", "1234h", true, true);
+        Printers printer2 = new Printers("EasyJet", "asd", true, false);
+        Printers printer3 = new Printers(listForPrinter2, "Optimus", "Prime", false, false);
+
+        hibernateDao.saveEntity(printer1);
+        hibernateDao.saveEntity(printer2);
+        hibernateDao.saveEntity(printer3);
+
     }
 
 

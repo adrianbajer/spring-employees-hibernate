@@ -9,7 +9,6 @@ import java.util.List;
 @Table(name = "Printers")
 @Data
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class Printers implements HibernateEntity {
 
     @ManyToMany
@@ -33,12 +32,41 @@ public class Printers implements HibernateEntity {
 
     @Column(name = "Color")
     @NonNull
-    private boolean isColor;
+    private Boolean isColor;
 
     @Column(name = "Laser")
     @NonNull
-    private boolean isLaser;
+    private Boolean isLaser;
 
     public Printers() {
     }
+
+    public Printers(List<Employees> employeesList, @NonNull String brand, @NonNull String model,
+                    @NonNull Boolean isColor, @NonNull Boolean isLaser) {
+        this.employeesList = employeesList;
+        this.brand = brand;
+        this.model = model;
+        this.isColor = isColor;
+        this.isLaser = isLaser;
+    }
+
+    public Printers(List<Employees> employeesList, int id, @NonNull String brand, @NonNull String model,
+                    @NonNull Boolean isColor, @NonNull Boolean isLaser) {
+        this.employeesList = employeesList;
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.isColor = isColor;
+        this.isLaser = isLaser;
+    }
+
+    public Printers(int id, @NonNull String brand, @NonNull String model,
+                    @NonNull boolean isColor, @NonNull boolean isLaser) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.isColor = isColor;
+        this.isLaser = isLaser;
+    }
 }
+
