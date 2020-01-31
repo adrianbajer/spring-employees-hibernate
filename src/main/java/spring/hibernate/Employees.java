@@ -4,8 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Employees")
@@ -20,6 +19,14 @@ public class Employees implements HibernateEntity {
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private List<Cars> cars;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "Employees_Printers",
+            joinColumns = {@JoinColumn(name = "employeeId", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "printerId", referencedColumnName = "ID")})
+    @ToString.Exclude // żeby nie wywalało stackoverflow exception
+    @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
+    private Set<Printers> printersSet;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Exclude
@@ -32,6 +39,7 @@ public class Employees implements HibernateEntity {
     private String firstName;
 
     @Column(name = "LastName")
+    @OrderColumn
     @NonNull
     private String lastName;
 
@@ -68,9 +76,26 @@ public class Employees implements HibernateEntity {
     @Setter
     private String email;
 
-    public Employees() {
+    // zgodnie z tym co znalazłam online trzeba dodać takie metody
+    public void addPrinter(Printers printer) {
+        printersSet.add(printer);
+        printer.getEmployeesSet().add(this);
     }
 
+    public void removeTag(Printers printer) {
+        printersSet.remove(printer);
+        printer.getEmployeesSet().remove(this);
+    }
+
+    public Set<Printers> getPrintersSet() {
+        if (printersSet == null) {
+            printersSet = new HashSet<>();
+        }
+        return printersSet;
+    }
+
+    public Employees() {
+    }
 
     public Employees(int id, String firstName, String lastName, String address, String city, int age, int salary, Date startJobDate, int benefit) {
         this.id = id;

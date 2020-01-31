@@ -40,12 +40,12 @@ public class PrinterController {
             employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
 
             printersList = new ArrayList<>();
-            List<Employees> listForPrinter1 = new ArrayList<>(Collections.singletonList(employee1));
-            List<Employees> listForPrinter2 = new ArrayList<>(Arrays.asList(employee1, employee2, employee3));
+            Set<Employees> setForPrinter1 = new HashSet<>(Collections.singletonList(employee1));
+            Set<Employees> setForPrinter2 = new HashSet<>(Arrays.asList(employee1, employee2, employee3));
 
-            Printers printer1 = new Printers(listForPrinter1, 1, "Hewlett Packard", "1234h", true, true);
+            Printers printer1 = new Printers(setForPrinter1, 1, "Hewlett Packard", "1234h", true, true);
             Printers printer2 = new Printers(2, "EasyJet", "asd", true, false);
-            Printers printer3 = new Printers(listForPrinter2, 3, "Optimus", "Prime", false, false);
+            Printers printer3 = new Printers(setForPrinter2, 3, "Optimus", "Prime", false, false);
             printersList.addAll(Arrays.asList(printer1, printer2, printer3));
         }
     }

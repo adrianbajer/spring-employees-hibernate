@@ -1,9 +1,6 @@
 package spring.hibernate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class DataSource {
 
@@ -50,12 +47,12 @@ public class DataSource {
         hibernateDao.saveEntity(car4);
         hibernateDao.saveEntity(car5);
 
-        List<Employees> listForPrinter1 = listToAdd;
-        List<Employees> listForPrinter2 = new ArrayList<>(Arrays.asList(employee1, employee6, employee7));
+        Set<Employees> setForPrinter1 = new HashSet<>(listToAdd);
+        Set<Employees> setForPrinter2 = new HashSet<>(Arrays.asList(employee1, employee6, employee7));
 
-        Printers printer1 = new Printers(listForPrinter1, "Hewlett Packard", "1234h", true, true);
+        Printers printer1 = new Printers(setForPrinter1, "Hewlett Packard", "1234h", true, true);
         Printers printer2 = new Printers("EasyJet", "asd", true, false);
-        Printers printer3 = new Printers(listForPrinter2, "Optimus", "Prime", false, false);
+        Printers printer3 = new Printers(setForPrinter2, "Optimus", "Prime", false, false);
 
         hibernateDao.saveEntity(printer1);
         hibernateDao.saveEntity(printer2);

@@ -3,19 +3,20 @@ package spring.hibernate;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Printers")
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Printers implements HibernateEntity {
 
-    @ManyToMany
-    @JoinColumn(name = "EmployeeId")
+    @ManyToMany(mappedBy = "printersSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Employees> employeesList;
+    private Set<Employees> employeesSet;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,22 +39,30 @@ public class Printers implements HibernateEntity {
     @NonNull
     private Boolean isLaser;
 
+    // zgodnie z tym co znalazłam online trzeba dodać takie metody
+    public void addEmployee(Employees employee) {
+        employeesSet.add(employee);
+        employee.getPrintersSet().add(this);
+    }
+
+    public void removeEmployee(Employees employee) {
+        employeesSet.remove(employee);
+        employee.getPrintersSet().remove(this);
+    }
+
+    public Set<Employees> getEmployeesSet() {
+        if (employeesSet == null) {
+            employeesSet = new HashSet<>();
+        }
+        return employeesSet;
+    }
+
     public Printers() {
     }
 
-    public Printers(List<Employees> employeesList, @NonNull String brand, @NonNull String model,
+    public Printers(Set<Employees> employeesSet, @NonNull String brand, @NonNull String model,
                     @NonNull Boolean isColor, @NonNull Boolean isLaser) {
-        this.employeesList = employeesList;
-        this.brand = brand;
-        this.model = model;
-        this.isColor = isColor;
-        this.isLaser = isLaser;
-    }
-
-    public Printers(List<Employees> employeesList, int id, @NonNull String brand, @NonNull String model,
-                    @NonNull Boolean isColor, @NonNull Boolean isLaser) {
-        this.employeesList = employeesList;
-        this.id = id;
+        this.employeesSet = employeesSet;
         this.brand = brand;
         this.model = model;
         this.isColor = isColor;

@@ -31,6 +31,7 @@ public class Cars implements HibernateEntity {
     private int id;
 
     @Column(name = "Brand")
+    @OrderColumn
     @NonNull
     private String brand;
 
