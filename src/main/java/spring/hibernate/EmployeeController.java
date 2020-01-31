@@ -18,13 +18,30 @@ import java.util.List;
 @Controller
 public class EmployeeController {
     private List<Employees> employeesList;
-    private HibernateDao hibernateDao;
+//    private HibernateDao hibernateDao;
 
     public EmployeeController(CarsRepository carsRepository, EmployeesRepository employeesRepository) {
         try {
-            hibernateDao = new HibernateDao();
-            DataSource.supplyDatabase();
-            employeesList = hibernateDao.get(Employees.class);
+//            hibernateDao = new HibernateDao();
+//            DataSource.supplyDatabase();
+            DataSourceJpa.supplyDatabase(carsRepository, employeesRepository);
+            System.out.println(employeesRepository.findOne(1));
+
+//            int i = 0;
+//            employeesRepository.findAll().forEach();
+//            for(Employees employees : employeesList){
+//                System.out.println(employees.toString());
+//            }
+//            for (Employees employees : employeesRepository.findAll()){
+////                System.out.println(employees.toString());
+//                employeesList.add(employees);
+//                System.out.println(i);
+//                i++;
+//            }
+            employeesList = employeesRepository.findAll();
+
+
+
         } catch (NullPointerException exception) {
             System.out.println("No connection with database");
             exception.getMessage();
@@ -55,11 +72,11 @@ public class EmployeeController {
     @RequestMapping(value = "/saveEmployee")
     public ModelAndView save(@ModelAttribute(value = "employee") Employees employee) {
         if (employee.getId() == 0) {
-            addEmployeeToDatabase(employee);
+//            addEmployeeToDatabase(employee);
             employee.setId(employeesList.size());
             employeesList.add(employee);
         } else {
-            updateEmployeeInDatabase(employee);
+//            updateEmployeeInDatabase(employee);
             employeesList.set(employee.getId() - 1, employee);
         }
         return new ModelAndView("redirect:/allEmployees");
@@ -68,7 +85,7 @@ public class EmployeeController {
     @RequestMapping(value = "/deleteEmployee", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
-        deleteEmployeeFromDatabase(employee);
+//        deleteEmployeeFromDatabase(employee);
         employeesList.remove(employee);
         return new ModelAndView("redirect:/allEmployees");
     }
@@ -84,28 +101,28 @@ public class EmployeeController {
         return employeesList.stream().filter(f -> f.getId() == id).findFirst().get();
     }
 
-    private void addEmployeeToDatabase(Employees employees) {
-        try {
-            hibernateDao.saveEntity(employees);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void updateEmployeeInDatabase(Employees employees) {
-        try {
-            hibernateDao.updateEntity(employees);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void deleteEmployeeFromDatabase(Employees employees) {
-        try {
-            hibernateDao.deleteEntity(employees);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void addEmployeeToDatabase(Employees employees) {
+//        try {
+//            hibernateDao.saveEntity(employees);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void updateEmployeeInDatabase(Employees employees) {
+//        try {
+//            hibernateDao.updateEntity(employees);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void deleteEmployeeFromDatabase(Employees employees) {
+//        try {
+//            hibernateDao.deleteEntity(employees);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }
