@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import spring.repository.CarsRepository;
+import spring.repository.EmployeesRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ public class EmployeeController {
     private List<Employees> employeesList;
     private HibernateDao hibernateDao;
 
-    public EmployeeController() {
+    public EmployeeController(CarsRepository carsRepository, EmployeesRepository employeesRepository) {
         try {
             hibernateDao = new HibernateDao();
             DataSource.supplyDatabase();
