@@ -17,15 +17,15 @@ public class DataSource {
             e.getStackTrace();
         }
 
-        Employees employee1 = new Employees("Piotr", "Pawlak", "Grójecka 28", "Warszawa", 1000, 18, new Date(), 0);
-        Employees employee2 = new Employees("Paweł", "Kaczyński", "Zielona 28", "Kraków", 2000, 28, new Date(), 1);
-        Employees employee3 = new Employees("Anna", "Pawlak", "Grójecka 28", "Warszawa", 3000, 45, new Date(), 1);
-        Employees employee4 = new Employees("Katarzyna", "Gierszałt", "Marymoncka 28", "Gdynia", 4000, 39, new Date(), 1);
-        Employees employee5 = new Employees("Maciej", "Józefowicz", "Koszykowa 28", "Warszawa", 5000, 31, new Date(), 1);
-        Employees employee6 = new Employees("Genowefa", "Pigwa", "Rybickiego 128", "Zamość", 6000, 29, new Date(), 1);
-        Employees employee7 = new Employees("Piotr", "Złomczyński", "Szucha 8", "Warszawa", 1500, 18, new Date(), 0);
+        Employees employee1 = new Employees("Piotr", "Pawlak", "Grójecka 28", "Warszawa", 1000, 18, new Date(), 0, "piotr.p@ourcompany.pl");
+        Employees employee2 = new Employees("Paweł", "Kaczyński", "Zielona 28", "Kraków", 2000, 28, new Date(), 1, "pawel@ourcompany.pl");
+        Employees employee3 = new Employees("Anna", "Pawlak", "Grójecka 28", "Warszawa", 3000, 45, new Date(), 1, "anna@ourcompany.pl");
+        Employees employee4 = new Employees("Katarzyna", "Gierszałt", "Marymoncka 28", "Gdynia", 4000, 39, new Date(), 1, "katarzyna@ourcompany.pl");
+        Employees employee5 = new Employees("Maciej", "Józefowicz", "Koszykowa 28", "Warszawa", 5000, 31, new Date(), 1, "maciej@ourcompany.pl");
+        Employees employee6 = new Employees("Genowefa", "Pigwa", "Rybickiego 128", "Zamość", 6000, 29, new Date(), 1, "genowefa@ourcompany.pl");
+        Employees employee7 = new Employees("Piotr", "Złomczyński", "Szucha 8", "Warszawa", 1500, 18, new Date(), 0, "piotr.z@ourcompany.pl");
 
-        // sprawdzamy, czy dane są już w bazie czy nie
+        // sprawdzamy, czy pracownicy są już w bazie czy nie
         List<Employees> verificationList = hibernateDao.get(Employees.class);
 
         List<Employees> listToAdd = new ArrayList<>(Arrays.asList(employee1, employee2, employee3, employee4, employee5, employee6, employee7));
@@ -54,9 +54,15 @@ public class DataSource {
         Printers printer2 = new Printers("EasyJet", "asd", true, false);
         Printers printer3 = new Printers(setForPrinter2, "Optimus", "Prime", false, false);
 
-        hibernateDao.saveEntity(printer1);
-        hibernateDao.saveEntity(printer2);
-        hibernateDao.saveEntity(printer3);
+        // sprawdzamy, czy drukarki są już w bazie czy nie
+        List<Printers> printersVerificationList = hibernateDao.get(Printers.class);
+
+        List<Printers> printersListToAdd = new ArrayList<>(Arrays.asList(printer1, printer2, printer3));
+        printersListToAdd.removeAll(printersVerificationList);
+
+        for (Printers printer : printersListToAdd) {
+            hibernateDao.saveEntity(printer);
+        }
 
     }
 

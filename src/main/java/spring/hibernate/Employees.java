@@ -14,7 +14,7 @@ import java.util.*;
 public class Employees implements HibernateEntity {
 
     // usunięcie pracownika spowoduje usunięcie samochodu
-    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @ToString.Exclude // żeby nie wywalało stackoverflow exception
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private List<Cars> cars;
@@ -75,6 +75,18 @@ public class Employees implements HibernateEntity {
     @Getter
     @Setter
     private String email;
+
+    public Employees(String firstName, String lastName, String address, String city, int salary, int age, Date startJobDate, int benefit, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.salary = salary;
+        this.age = age;
+        this.startJobDate = startJobDate;
+        this.benefit = benefit;
+        this.email = email;
+    }
 
     // zgodnie z tym co znalazłam online trzeba dodać takie metody
     public void addPrinter(Printers printer) {

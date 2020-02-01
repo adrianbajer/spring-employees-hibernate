@@ -20,6 +20,7 @@ public class Printers implements HibernateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     @Column(name = "ID")
     private int id;
 
