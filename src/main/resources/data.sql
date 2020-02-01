@@ -1,0 +1,4 @@
+-- INSERT INTO Employees(id, address, age, benefit, city, email, first_name, last_name, salary, start_job_date) VALUES
+--     (1,'Polna 10',23,1,'Warszawa','dolek@wp.pl','Bolek','Kolecki',1000,2019-12-12);
+--
+-- SELECT setval('public.hibernate.sequence',15,true);

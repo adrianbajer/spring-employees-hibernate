@@ -1,5 +1,6 @@
 package spring.hibernate;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,38 +20,46 @@ import java.util.List;
 public class EmployeeController {
     private List<Employees> employeesList;
 //    private HibernateDao hibernateDao;
+    @Autowired
+    private EmployeesRepository employeesRepository;
 
-    public EmployeeController(CarsRepository carsRepository, EmployeesRepository employeesRepository) {
-        try {
-//            hibernateDao = new HibernateDao();
-//            DataSource.supplyDatabase();
-            DataSourceJpa.supplyDatabase(carsRepository, employeesRepository);
-            System.out.println(employeesRepository.findOne(1));
 
-//            int i = 0;
-//            employeesRepository.findAll().forEach();
-//            for(Employees employees : employeesList){
-//                System.out.println(employees.toString());
-//            }
-//            for (Employees employees : employeesRepository.findAll()){
+    public EmployeeController() {
+//        DataSourceJpa.supplyDatabase(employeesRepository);
+
+
+//        try {
+//
+////            hibernateDao = new HibernateDao();
+////            DataSource.supplyDatabase();
+////            DataSourceJpa.supplyDatabase(carsRepository, employeesRepository);
+////            System.out.println(employeesRepository.findOne(1));
+//
+////            int i = 0;
+////            employeesRepository.findAll().forEach();
+////            for(Employees employees : employeesList){
 ////                System.out.println(employees.toString());
-//                employeesList.add(employees);
-//                System.out.println(i);
-//                i++;
-//            }
-            employeesList = employeesRepository.findAll();
-
-
-
-        } catch (NullPointerException exception) {
-            System.out.println("No connection with database");
-            exception.getMessage();
-            employeesList = new ArrayList<>();
-            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
-            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
-            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
-            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
-        }
+////            }
+////            for (Employees employees : employeesRepository.findAll()){
+//////                System.out.println(employees.toString());
+////                employeesList.add(employees);
+////                System.out.println(i);
+////                i++;
+////            }
+//            employeesList = employeesRepository.findAll();
+//            System.out.println(employeesList);
+//
+//
+//
+//        } catch (NullPointerException exception) {
+//            System.out.println("No connection with database");
+//            exception.getMessage();
+//            employeesList = new ArrayList<>();
+//            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
+//            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
+//            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
+//            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
+//        }
     }
 
     @RequestMapping("/")
@@ -60,6 +69,8 @@ public class EmployeeController {
 
     @RequestMapping("/allEmployees")
     public ModelAndView showEmployeesList(Model model) {
+//        saveEmployeeToDatabase();
+        employeesList = employeesRepository.findAll();
         return new ModelAndView("/all_employees_list", "list", employeesList);
     }
 
@@ -100,6 +111,13 @@ public class EmployeeController {
     private Employees getEmployeesById(@RequestParam int id) {
         return employeesList.stream().filter(f -> f.getId() == id).findFirst().get();
     }
+
+    private void saveEmployeeToDatabase() {
+        employeesRepository.save(new Employees("Piotr", "JPawlak", "Grójecka 28", "Warszawa", 1000, 18, new Date(), 0));
+
+    }
+
+
 
 //    private void addEmployeeToDatabase(Employees employees) {
 //        try {
