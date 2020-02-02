@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.repository.CarsRepository;
 import spring.repository.EmployeesRepository;
+import spring.services.CarsServiceImpl;
+import spring.services.EmployeesService;
+import spring.services.EmployeesServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +25,8 @@ import java.util.List;
 public class CarController {
     private List<Cars> carsList;
     private List<Employees> employeesList;
-//    private HibernateDao hibernateDao;
+    private CarsServiceImpl carsService;
+    private EmployeesService employeesService;
 
     //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
     // @ManyToMany oraz dorobić do niej odpowiedni formularz.
@@ -30,7 +34,14 @@ public class CarController {
     // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
     // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
 
-    public CarController() {
+    public CarController(CarsServiceImpl carsService ,EmployeesServiceImpl employeesService) {
+
+        this.carsService = carsService;
+        this.employeesService = employeesService;
+
+        carsList = carsService.getAll();
+        employeesList = employeesService.getAll();
+
 //        try {
 ////            hibernateDao = new HibernateDao();
 ////            DataSource.supplyDatabase();
@@ -51,88 +62,90 @@ public class CarController {
 //            Cars car2 = new Cars(employee2, 2, "Honda", "Civic", new Date());
 //            carsList.addAll(Arrays.asList(car1, car2));
 //        }
-//    }
-//
-//    @RequestMapping("/seeAll")
-//    public ModelAndView showCarList(Model model) {
-//        return new ModelAndView("/all_cars_list", "carsList", carsList);
-//    }
-//
-//    @RequestMapping(value = "/getForm", method = RequestMethod.GET)
-//    public String showForm(Model model) {
-//        model.addAttribute("car", new Cars());
-//        model.addAttribute("employeesList", employeesList);
-//        return "/add_car_form";
-//    }
-//
-//    @RequestMapping(value = "/save")
-//    public ModelAndView save(@ModelAttribute(value = "car") Cars car
-//            , @ModelAttribute(value = "item.id") String itemId
-//            , @RequestParam(value = "date") String date) {
-//        int idAsInt = Integer.parseInt(itemId);
-//        Employees employeeToSet = employeesList.stream().filter(f -> f.getId() == idAsInt).findFirst().get();
-//        car.setEmployees(employeeToSet);
-//
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            Date dateParsed = format.parse(date);
-//            car.setRegistrationDate(dateParsed);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            car.setRegistrationDate(new Date());
-//        }
-//
-//        if (car.getId() == 0) {
-////            addCarToDatabase(car);
+    }
+
+    @RequestMapping("/seeAll")
+    public ModelAndView showCarList(Model model) {
+        carsList = carsService.getAll();
+        return new ModelAndView("/all_cars_list", "carsList", carsList);
+    }
+
+    @RequestMapping(value = "/getForm", method = RequestMethod.GET)
+    public String showForm(Model model) {
+        employeesList = employeesService.getAll();
+        model.addAttribute("car", new Cars());
+        model.addAttribute("employeesList", employeesList);
+        return "/add_car_form";
+    }
+
+    @RequestMapping(value = "/save")
+    public ModelAndView save(@ModelAttribute(value = "car") Cars car
+            , @ModelAttribute(value = "item.id") String itemId
+            , @RequestParam(value = "date") String date) {
+        int idAsInt = Integer.parseInt(itemId);
+        Employees employeeToSet = employeesList.stream().filter(f -> f.getId() == idAsInt).findFirst().get();
+        car.setEmployees(employeeToSet);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dateParsed = format.parse(date);
+            car.setRegistrationDate(dateParsed);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            car.setRegistrationDate(new Date());
+        }
+
+        if (car.getId() == 0) {
+            addCarToDatabase(car);
 //            car.setId(carsList.size());
 //            carsList.add(car);
-//        } else {
-////            updateCarInDatabase(car);
+        } else {
+            updateCarInDatabase(car);
 //            carsList.set(car.getId() - 1, car);
-//        }
-//        return new ModelAndView("redirect:/car/seeAll");
-//    }
-//
-//    @RequestMapping(value = "/delete_car", method = RequestMethod.POST)
-//    public ModelAndView delete(@ModelAttribute(value = "car_id") String car_id) {
-//        Cars car = getCarById(Integer.parseInt(car_id));
-////        deleteCarFromDatabase(car);
-//        carsList.remove(car);
-//        return new ModelAndView("redirect:/car/seeAll");
-//    }
-//
-//    @RequestMapping(value = "/edit_car", method = RequestMethod.POST)
-//    public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
-//        Cars car = getCarById(Integer.parseInt(car_id));
-//        return new ModelAndView("/add_car_form", "car", car);
-//    }
-//
-//    private Cars getCarById(@RequestParam int id) {
-//        return carsList.stream().filter(f -> f.getId() == id).findFirst().get();
-//    }
+        }
+        return new ModelAndView("redirect:/car/seeAll");
+    }
 
-//    private void addCarToDatabase(Cars car) {
-//        try {
-//            hibernateDao.saveEntity(car);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void updateCarInDatabase(Cars car) {
-//        try {
-//            hibernateDao.updateEntity(car);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void deleteCarFromDatabase(Cars car) {
-//        try {
-//            hibernateDao.deleteEntity(car);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
+    @RequestMapping(value = "/delete_car", method = RequestMethod.POST)
+    public ModelAndView delete(@ModelAttribute(value = "car_id") String car_id) {
+        Cars car = getCarById(Integer.parseInt(car_id));
+        deleteCarFromDatabase(car);
+//        carsList.remove(car);
+        return new ModelAndView("redirect:/car/seeAll");
+    }
+
+    @RequestMapping(value = "/edit_car", method = RequestMethod.POST)
+    public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
+        Cars car = getCarById(Integer.parseInt(car_id));
+        return new ModelAndView("/add_car_form", "car", car);
+    }
+
+    private Cars getCarById(@RequestParam int id) {
+        return carsList.stream().filter(f -> f.getId() == id).findFirst().get();
+    }
+
+    private void addCarToDatabase(Cars car) {
+        try {
+            carsService.create(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCarInDatabase(Cars car) {
+        try {
+            carsService.create(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCarFromDatabase(Cars car) {
+        try {
+            carsService.delete(car);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 }

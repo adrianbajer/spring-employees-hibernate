@@ -1,6 +1,5 @@
 package spring.hibernate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,23 +7,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.repository.CarsRepository;
-import spring.repository.EmployeesRepository;
+import spring.services.EmployeesServiceImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 public class EmployeeController {
     private List<Employees> employeesList;
-//    private HibernateDao hibernateDao;
-    @Autowired
-    private EmployeesRepository employeesRepository;
+    private EmployeesServiceImpl employeesServiceImpl;
 
 
-    public EmployeeController() {
+
+
+    public EmployeeController(EmployeesServiceImpl employeesServiceImpl) {
+
+        this.employeesServiceImpl = employeesServiceImpl;
+        employeesList = employeesServiceImpl.getAll();
+
+//        employeesList = employeesService.getAll();
+//        System.out.println(employeesList.size());
+
+
 //        DataSourceJpa.supplyDatabase(employeesRepository);
 
 
@@ -70,7 +73,7 @@ public class EmployeeController {
     @RequestMapping("/allEmployees")
     public ModelAndView showEmployeesList(Model model) {
 //        saveEmployeeToDatabase();
-        employeesList = employeesRepository.findAll();
+        employeesList = employeesServiceImpl.getAll();
         return new ModelAndView("/all_employees_list", "list", employeesList);
     }
 
@@ -83,12 +86,12 @@ public class EmployeeController {
     @RequestMapping(value = "/saveEmployee")
     public ModelAndView save(@ModelAttribute(value = "employee") Employees employee) {
         if (employee.getId() == 0) {
-//            addEmployeeToDatabase(employee);
-            employee.setId(employeesList.size());
-            employeesList.add(employee);
+            addEmployeeToDatabase(employee);
+//            employee.setId(employeesList.size());
+//            employeesList.add(employee);
         } else {
-//            updateEmployeeInDatabase(employee);
-            employeesList.set(employee.getId() - 1, employee);
+            updateEmployeeInDatabase(employee);
+//            employeesList.set(employee.getId() - 1, employee);
         }
         return new ModelAndView("redirect:/allEmployees");
     }
@@ -96,8 +99,8 @@ public class EmployeeController {
     @RequestMapping(value = "/deleteEmployee", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
-//        deleteEmployeeFromDatabase(employee);
-        employeesList.remove(employee);
+        deleteEmployeeFromDatabase(employee);
+//        employeesList.remove(employee);
         return new ModelAndView("redirect:/allEmployees");
     }
 
@@ -112,35 +115,35 @@ public class EmployeeController {
         return employeesList.stream().filter(f -> f.getId() == id).findFirst().get();
     }
 
-    private void saveEmployeeToDatabase() {
-        employeesRepository.save(new Employees("Piotr", "JPawlak", "Grójecka 28", "Warszawa", 1000, 18, new Date(), 0));
+//    private void saveEmployeeToDatabase() {
+//        employeesRepository.save(new Employees("Piotr", "JPawlak", "Grójecka 28", "Warszawa", 1000, 18, new Date(), 0));
+//
+//    }
 
+
+
+    private void addEmployeeToDatabase(Employees employees) {
+        try {
+            employeesServiceImpl.create(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
+    private void updateEmployeeInDatabase(Employees employees) {
+        try {
+            employeesServiceImpl.update(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
 
-
-//    private void addEmployeeToDatabase(Employees employees) {
-//        try {
-//            hibernateDao.saveEntity(employees);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void updateEmployeeInDatabase(Employees employees) {
-//        try {
-//            hibernateDao.updateEntity(employees);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void deleteEmployeeFromDatabase(Employees employees) {
-//        try {
-//            hibernateDao.deleteEntity(employees);
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void deleteEmployeeFromDatabase(Employees employees) {
+        try {
+            employeesServiceImpl.delete(employees);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
