@@ -15,7 +15,8 @@ import java.util.List;
 public class Employees implements HibernateEntity {
 
     // usunięcie pracownika spowoduje usunięcie samochodu
-    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employees", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude // żeby nie wywalało stackoverflow exception
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private List<Cars> cars;
