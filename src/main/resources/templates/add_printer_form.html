@@ -20,9 +20,9 @@
             <label>Choose employees that may use this printer:<br>
                 <i> (Hold Ctrl / Command to select multiple items.)</i><br>
                 <br>
-                <select class="form-control" name="chosenEmployeesIdsList" multiple>
+                <select class="form-control" multiple>
                     <option th:each="item : ${employeesList}"
-                            th:selected="${chosenEmployeesIdsList.add(item.id)}"
+                            th:selected="${chosenEmployeesIds.add(item.id)}"
                             th:value="${item.id}"
                             th:text="${item.firstName} + ' ' + ${item.lastName}"></option>
                 </select>

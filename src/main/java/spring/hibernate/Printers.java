@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Printers implements HibernateEntity {
 
-    //info o join table musi być w printers bo inaczej tabela employees_printers nie wypełnia się danymi
+    //info o join table musi być w printers bo inaczej tabela employees-printers nie wypełnia się danymi
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "Employees_Printers",
             joinColumns = {@JoinColumn(name = "printerId", referencedColumnName = "ID")},
