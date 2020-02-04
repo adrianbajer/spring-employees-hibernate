@@ -14,10 +14,10 @@
         <form action="#" class="form-group" th:action="@{/car/save}" th:object="${car}" method="post">
             <input type="hidden" th:field="*{id}">
             <label>Car User
+<!-- musiałam zmienić nazwę pozycji w employeesList z employee na item, bo spring usiłował na podstawie samej nazwy
+     dowiązywać tę wartość do beana car i wywalał błąd że typy się nie zgadzają-->
                 <select class="form-control" name="item.id" required>
                     <option value="default">Select employee</option>
-                    <!--                    musiałam zmienić nazwę pozycji w employeesList z employee na item, bo spring usiłował na podstawie samej nazwy
-                                            dowiązywać tę wartość do beana car i wywalał błąd że typy się nie zgadzają-->
                     <option th:each="item : ${employeesList}"
                             th:value="${item.id}"
                             th:text="${item.firstName} + ' ' + ${item.lastName}"></option>

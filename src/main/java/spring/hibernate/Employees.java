@@ -19,10 +19,7 @@ public class Employees implements HibernateEntity {
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private List<Cars> cars;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "Employees_Printers",
-            joinColumns = {@JoinColumn(name = "employeeId", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "printerId", referencedColumnName = "ID")})
+    @ManyToMany(mappedBy = "employeesSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude // żeby nie wywalało stackoverflow exception
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
     private Set<Printers> printersSet;
