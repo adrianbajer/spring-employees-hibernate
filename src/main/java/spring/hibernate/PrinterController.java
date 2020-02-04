@@ -59,16 +59,21 @@ public class PrinterController {
     public String showForm(Model model) {
         model.addAttribute("printer", new Printers());
         model.addAttribute("employeesList", employeesList);
+        model.addAttribute("chosenEmployeesIds", new ArrayList<>());
         return "/add_printer_form";
     }
 
     @RequestMapping(value = "/save")
     public ModelAndView save(@ModelAttribute(value = "printer") Printers printer
-            , @ModelAttribute(value = "item.id") String itemId) {
-        int idAsInt = Integer.parseInt(itemId);
-        // todo obsługa checkboxa
-        // Employees employeeToSet = employeesList.stream().filter(f -> f.getId() == idAsInt).findFirst().get();
-        //printer.setEmployeesList(listForPrinter);
+            , @ModelAttribute(value = "employeesIdArray") ArrayList<Integer> employeesIdArray) {
+
+        Set<Employees> chosenEmployees = new HashSet<>();
+        for (Employees employees : employeesList) {
+            if (employeesIdArray.contains(employees.getId())) {
+                chosenEmployees.add(employees);
+            }
+        }
+        printer.setEmployeesSet(chosenEmployees);
 
         if (printer.getId() == 0) {
             addPrinterToDatabase(printer);

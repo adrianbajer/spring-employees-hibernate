@@ -17,12 +17,31 @@
                                 required></label><br>
             <label>Model <input type="text" class="form-control" th:field="*{model}" placeholder="ABCD"
                                 required></label><br>
-            <!--            todo-->
-            <label>Color <input type="checkbox" class="form-control" th:field="*{isColor}"
-                                required></label><br>
-            <!--            todo-->
-            <label>Laser <input type="checkbox" class="form-control" th:field="*{isLaser}"
-                                required></label><br>
+            <label>Choose employees that may use this printer:<br>
+                <i> (Hold Ctrl / Command to select multiple items.)</i><br>
+                <br>
+                <select class="form-control" multiple>
+                    <option th:each="item : ${employeesList}"
+                            th:selected="${chosenEmployeesIds.add(item.id)}"
+                            th:value="${item.id}"
+                            th:text="${item.firstName} + ' ' + ${item.lastName}"></option>
+                </select>
+            </label><br>
+            <br>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" th:field="*{isColor}" id="checkbox1">
+                <label class="form-check-label" for="checkbox1">
+                    Color
+                </label>
+            </div>
+            <br>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" th:field="*{isLaser}" id="checkbox2">
+                <label class="form-check-label" for="checkbox2">
+                    Laser
+                </label>
+            </div>
+            <br>
             <input type="submit" class="btn btn-danger" value="Save">
         </form>
         <hr>

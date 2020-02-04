@@ -85,7 +85,7 @@ public class CarController {
         return new ModelAndView("redirect:/car/seeAll");
     }
 
-    @RequestMapping(value = "/delete_car", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
         deleteCarFromDatabase(car);
@@ -93,7 +93,7 @@ public class CarController {
         return new ModelAndView("redirect:/car/seeAll");
     }
 
-    @RequestMapping(value = "/edit_car", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
         return new ModelAndView("/add_car_form", "car", car);
