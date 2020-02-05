@@ -14,3 +14,18 @@ INSERT INTO Cars(employee_id, brand, model, registration_date) VALUES
     (4,'Subaru','Forester','2018-06-12'),
     (5,'Subaru','Forester','2019-06-12');
 
+INSERT INTO Printers(brand, color, laser, model) VALUES
+    ('Hewlett Packard', 1, 1,'1234h'),
+    ('EasyJet', 1, 0,'asd'),
+    ('Optimus', 0, 0,'Prime');
+
+INSERT INTO Employees_Printers(printer_id, employee_id) VALUES
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (3, 1),
+    (3, 6),
+    (3, 7);
+

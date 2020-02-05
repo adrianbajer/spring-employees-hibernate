@@ -66,8 +66,6 @@ public class CarController {
 
     @RequestMapping("/seeAll")
     public ModelAndView showCarList(Model model) {
-//        carsList = carsService.getAll();
-//        deleteCarFromDatabase(carsList.get(2));
         carsList = carsService.getAll();
         return new ModelAndView("/all_cars_list", "carsList", carsList);
     }
