@@ -20,6 +20,7 @@
             <label>Choose employees that may use this printer:<br>
                 <i> (Hold Ctrl / Command to select multiple items.)</i><br>
                 <br>
+<!--                zapamiętuje tylko pierwszego wybranego pracownika z listy :(-->
                 <select class="form-control" multiple>
                     <option th:each="item : ${employeesList}"
                             th:selected="${chosenEmployeesIdsList.add(item.id)}"

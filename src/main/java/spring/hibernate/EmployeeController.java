@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -47,12 +49,22 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/save")
-    public ModelAndView save(@ModelAttribute(value = "employee") Employees employee) {
+    public ModelAndView save(@ModelAttribute(value = "employee") Employees employee,
+                             @RequestParam(value = "date") String date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dateParsed = format.parse(date);
+            employee.setStartJobDate(dateParsed);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            employee.setStartJobDate(new Date());
+        }
+
         if (employee.getId() == 0) {
             addEmployeeToDatabase(employee);
             employee.setId(employeesList.size());
             employeesList.add(employee);
-            // todo zmienić tak żeby móc pobierać datę z kalendarza
         } else {
             updateEmployeeInDatabase(employee);
             int index = employeesList.indexOf(employee);

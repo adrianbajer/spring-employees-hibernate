@@ -14,7 +14,7 @@ import java.util.Set;
 public class Printers implements HibernateEntity {
 
     //info o join table musi być w printers bo inaczej tabela employees-printers nie wypełnia się danymi
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "Employees_Printers",
             joinColumns = {@JoinColumn(name = "printerId", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "employeeId", referencedColumnName = "ID")})

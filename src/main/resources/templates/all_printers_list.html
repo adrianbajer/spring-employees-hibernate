@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th>id</th>
-                <!--                <th>Users List</th>-->
+                <th>Users List</th>
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Color</th>
@@ -30,7 +30,8 @@
             <tbody>
             <tr class="result" data-th-each="printer : ${printersList}">
                 <td th:text="${printer.id}"></td>
-                <!--                <td th:text="${printer.getEmployees().getFirstName() + ' ' + printer.getEmployees().getLastName()}"></td>-->
+                <td th:each="item : ${printer.getEmployeesSet()}"
+                    th:text="${item.getFirstName() + ' ' + item.getLastName()}"></td>
                 <td th:text="${printer.brand}"></td>
                 <td th:text="${printer.model}"></td>
                 <td th:text="${printer.isColor}"></td>
