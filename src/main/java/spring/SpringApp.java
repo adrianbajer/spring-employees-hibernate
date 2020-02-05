@@ -6,6 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan(basePackages = {
         "spring.hibernate",
+        "spring.services",
+        "spring.repository"
 })
 @SpringBootApplication
 public class SpringApp {
