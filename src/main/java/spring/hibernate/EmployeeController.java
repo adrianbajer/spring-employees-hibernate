@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping("/employee")
 public class EmployeeController {
     private List<Employees> employeesList;
     private HibernateDao hibernateDao;
@@ -34,23 +35,18 @@ public class EmployeeController {
         }
     }
 
-    @RequestMapping("/")
-    public String indexGet() {
-        return "/index";
-    }
-
-    @RequestMapping("/allEmployees")
+    @RequestMapping("/seeAll")
     public ModelAndView showEmployeesList(Model model) {
         return new ModelAndView("/all_employees_list", "list", employeesList);
     }
 
-    @RequestMapping(value = "/addEmployee", method = RequestMethod.GET)
+    @RequestMapping(value = "/getForm", method = RequestMethod.GET)
     public String showForm(Model model) {
         model.addAttribute("employee", new Employees());
         return "/add_employee_form";
     }
 
-    @RequestMapping(value = "/saveEmployee")
+    @RequestMapping(value = "/save")
     public ModelAndView save(@ModelAttribute(value = "employee") Employees employee) {
         if (employee.getId() == 0) {
             addEmployeeToDatabase(employee);
@@ -59,20 +55,21 @@ public class EmployeeController {
             // todo zmienić tak żeby móc pobierać datę z kalendarza
         } else {
             updateEmployeeInDatabase(employee);
-            employeesList.set(employee.getId() - 1, employee);
+            int index = employeesList.indexOf(employee);
+            employeesList.set(index, employee);
         }
-        return new ModelAndView("redirect:/allEmployees");
+        return new ModelAndView("redirect:/employee/seeAll");
     }
 
-    @RequestMapping(value = "/deleteEmployee", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
         deleteEmployeeFromDatabase(employee);
         employeesList.remove(employee);
-        return new ModelAndView("redirect:/allEmployees");
+        return new ModelAndView("redirect:/employee/seeAll");
     }
 
-    @RequestMapping(value = "/editEmployee", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
         return new ModelAndView("/add_employee_form", "employee", employee);

@@ -3,11 +3,10 @@ package spring.hibernate;
 import java.util.*;
 
 public class DataSource {
-
     public static boolean isDatabaseConnection = Boolean.FALSE;
+    private static HibernateDao hibernateDao = null;
 
     public static void supplyDatabase() {
-        HibernateDao hibernateDao = null;
 
         try {
             hibernateDao = new HibernateDao();
@@ -64,6 +63,29 @@ public class DataSource {
             hibernateDao.saveEntity(printer);
         }
 
+    }
+
+//    public static void deleteData(Class<T> type){
+//        List<T> listToDelete = hibernateDao.get(class)
+//    }
+
+    public static void restoreDatabase() {
+        List<Employees> allEmployees = hibernateDao.get(Employees.class);
+        for (Employees employees : allEmployees) {
+            hibernateDao.deleteEntity(employees);
+        }
+
+        List<Cars> allCars = hibernateDao.get(Cars.class);
+        for (Cars cars : allCars) {
+            hibernateDao.deleteEntity(cars);
+        }
+
+        List<Printers> allPrinters = hibernateDao.get(Printers.class);
+        for (Printers printers : allPrinters) {
+            hibernateDao.deleteEntity(printers);
+        }
+
+        // supplyDatabase();
     }
 
 

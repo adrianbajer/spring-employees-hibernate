@@ -22,7 +22,7 @@
                 <br>
                 <select class="form-control" multiple>
                     <option th:each="item : ${employeesList}"
-                            th:selected="${chosenEmployeesIds.add(item.id)}"
+                            th:selected="${chosenEmployeesIdsList.add(item.id)}"
                             th:value="${item.id}"
                             th:text="${item.firstName} + ' ' + ${item.lastName}"></option>
                 </select>

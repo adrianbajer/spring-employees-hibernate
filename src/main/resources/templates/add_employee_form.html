@@ -11,7 +11,7 @@
 <div class="container">
     <h2>Employee Form</h2>
     <div class="form-group">
-        <form action="#" class="form-group" th:action="@{/saveEmployee}" th:object="${employee}" method="post">
+        <form action="#" class="form-group" th:action="@{/employee/save}" th:object="${employee}" method="post">
             <input type="hidden" th:field="*{id}">
             <label>First Name <input type="text" class="form-control" th:field="*{firstName}" placeholder="Jane"
                                      required></label><br>

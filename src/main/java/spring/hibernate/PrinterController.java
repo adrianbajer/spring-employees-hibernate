@@ -87,7 +87,7 @@ public class PrinterController {
             printersList.add(printer);
         } else {
             updatePrinterInDatabase(printer);
-            printersList.set(printer.getId() - 1, printer);
+            //printersList.set(printer.getId() - 1, printer);
         }
         return new ModelAndView("redirect:/printer/seeAll");
     }

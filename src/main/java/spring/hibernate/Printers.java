@@ -75,7 +75,7 @@ public class Printers implements HibernateEntity {
     }
 
     public Printers(int id, @NonNull String brand, @NonNull String model,
-                    @NonNull boolean isColor, @NonNull boolean isLaser) {
+                    @NonNull Boolean isColor, @NonNull Boolean isLaser) {
         this.id = id;
         this.brand = brand;
         this.model = model;

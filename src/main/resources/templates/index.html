@@ -13,16 +13,21 @@
     <form>
         <div class="form-row">
             <div class="col">
-                <a href="/allEmployees" class="form-control">All Employees List</a><br>
+                <a href="/employee/seeAll" class="form-control">All Employees List</a><br>
                 <a href="/car/seeAll" class="form-control">All Cars List</a><br>
                 <a href="/printer/seeAll" class="form-control">All Printers List</a><br>
             </div>
             <div class="col">
-                <a href="/addEmployee" class="form-control">Add Employee Form</a><br>
+                <a href="/employee/getForm" class="form-control">Add Employee Form</a><br>
                 <a href="/car/getForm" class="form-control">Add Car Form</a> <br>
                 <a href="/printer/getForm" class="form-control">Add Printer Form</a>
             </div>
         </div>
+    </form>
+
+    <form method="post" class="padding5px" action="#" th:action="@{/restoreData}">
+        <input type="submit" class="btn btn-danger btn-block"
+               value="Restore database to it's initial state. This action cannot be undone.">
     </form>
 
 </div>
