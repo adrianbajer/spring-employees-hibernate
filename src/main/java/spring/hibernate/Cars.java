@@ -18,7 +18,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Cars implements HibernateEntity {
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+//    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "EmployeeId") // można dać nullable = false i to będzie odpowiednik adnotacji @NonNull
     @ToString.Exclude // żeby nie wywalało stackoverflow exception
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba w świetle equals i hashCode
