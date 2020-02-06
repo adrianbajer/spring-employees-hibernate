@@ -7,16 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.repository.CarsRepository;
-import spring.repository.EmployeesRepository;
 import spring.services.CarsServiceImpl;
 import spring.services.EmployeesService;
 import spring.services.EmployeesServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -97,11 +93,8 @@ public class CarController {
 
         if (car.getId() == 0) {
             addCarToDatabase(car);
-//            car.setId(carsList.size());
-//            carsList.add(car);
         } else {
             updateCarInDatabase(car);
-//            carsList.set(car.getId() - 1, car);
         }
         return new ModelAndView("redirect:/car/seeAll");
     }
@@ -110,7 +103,6 @@ public class CarController {
     public ModelAndView delete(@ModelAttribute(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
         deleteCarFromDatabase(car);
-//        carsList.remove(car);
         return new ModelAndView("redirect:/car/seeAll");
     }
 

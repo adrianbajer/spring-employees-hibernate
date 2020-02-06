@@ -1,6 +1,5 @@
 package spring.services;
 
-import spring.hibernate.Cars;
 import spring.hibernate.Printers;
 
 import java.util.List;

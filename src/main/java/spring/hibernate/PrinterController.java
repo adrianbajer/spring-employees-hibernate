@@ -7,20 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import spring.services.CarsServiceImpl;
-import spring.services.EmployeesService;
 import spring.services.EmployeesServiceImpl;
 import spring.services.PrintersServiceImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("printer")
 public class PrinterController {
     private List<Printers> printersList;
     private List<Employees> employeesList;
-    private PrintersServiceImpl printersService;
-    private EmployeesService employeesService;
+    private PrintersServiceImpl printersServiceImpl;
+    private EmployeesServiceImpl employeesServiceImpl;
 
     //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
     // @ManyToMany oraz dorobić do niej odpowiedni formularz.
@@ -28,13 +29,13 @@ public class PrinterController {
     // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
     // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
 
-    public PrinterController(PrintersServiceImpl printersService , EmployeesServiceImpl employeesService) {
+    public PrinterController(PrintersServiceImpl printersServiceImpl, EmployeesServiceImpl employeesServiceImpl) {
 
-        this.printersService = printersService;
-        this.employeesService = employeesService;
+        this.printersServiceImpl = printersServiceImpl;
+        this.employeesServiceImpl = employeesServiceImpl;
 
-        printersList = printersService.getAll();
-        employeesList = employeesService.getAll();
+        printersList = printersServiceImpl.getAll();
+        employeesList = employeesServiceImpl.getAll();
 
 
 //        try {
@@ -65,13 +66,13 @@ public class PrinterController {
 
     @RequestMapping("/seeAll")
     public ModelAndView showPrinterList(Model model) {
-        printersList = printersService.getAll();
+        printersList = printersServiceImpl.getAll();
         return new ModelAndView("/all_printers_list", "printersList", printersList);
     }
 
     @RequestMapping(value = "/getForm", method = RequestMethod.GET)
     public String showForm(Model model) {
-        employeesList = employeesService.getAll();
+        employeesList = employeesServiceImpl.getAll();
         model.addAttribute("printer", new Printers());
         model.addAttribute("employeesList", employeesList);
         model.addAttribute("chosenEmployeesIdsList", new ArrayList<>());
@@ -82,7 +83,7 @@ public class PrinterController {
     public ModelAndView save(@ModelAttribute(value = "printer") Printers printer
             , @ModelAttribute(value = "chosenEmployeesIdsList") ArrayList<String> chosenEmployeesIdsList) {
 
-        employeesList = employeesService.getAll();
+        employeesList = employeesServiceImpl.getAll();
 
         List<Integer> idsToIntList = new ArrayList<>();
         for (String idToConvert : chosenEmployeesIdsList) {
@@ -100,11 +101,8 @@ public class PrinterController {
 
         if (printer.getId() == 0) {
             addPrinterToDatabase(printer);
-//            printer.setId(printersList.size());
-//            printersList.add(printer);
         } else {
             updatePrinterInDatabase(printer);
-            //printersList.set(printer.getId() - 1, printer);
         }
         return new ModelAndView("redirect:/printer/seeAll");
     }
@@ -113,7 +111,6 @@ public class PrinterController {
     public ModelAndView delete(@ModelAttribute(value = "printer_id") String printerId) {
         Printers printer = getPrinterById(Integer.parseInt(printerId));
         deletePrinterFromDatabase(printer);
-//        printersList.remove(printer);
         return new ModelAndView("redirect:/printer/seeAll");
     }
 
@@ -129,7 +126,7 @@ public class PrinterController {
 
     private void addPrinterToDatabase(Printers printer) {
         try {
-            printersService.create(printer);
+            printersServiceImpl.create(printer);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -137,7 +134,7 @@ public class PrinterController {
 
     private void updatePrinterInDatabase(Printers printer) {
         try {
-            printersService.create(printer);
+            printersServiceImpl.create(printer);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -145,7 +142,7 @@ public class PrinterController {
 
     private void deletePrinterFromDatabase(Printers printer) {
         try {
-            printersService.delete(printer);
+            printersServiceImpl.delete(printer);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

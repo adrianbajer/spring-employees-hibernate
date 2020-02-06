@@ -11,8 +11,6 @@ import spring.services.EmployeesServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +19,6 @@ import java.util.List;
 public class EmployeeController {
     private List<Employees> employeesList;
     private EmployeesServiceImpl employeesServiceImpl;
-
-
-
 
     public EmployeeController(EmployeesServiceImpl employeesServiceImpl) {
 
@@ -73,7 +68,6 @@ public class EmployeeController {
 
     @RequestMapping("/seeAll")
     public ModelAndView showEmployeesList(Model model) {
-//        saveEmployeeToDatabase();
         employeesList = employeesServiceImpl.getAll();
         return new ModelAndView("/all_employees_list", "list", employeesList);
     }
@@ -99,12 +93,8 @@ public class EmployeeController {
 
         if (employee.getId() == 0) {
             addEmployeeToDatabase(employee);
-//            employee.setId(employeesList.size());
-//            employeesList.add(employee);
         } else {
             updateEmployeeInDatabase(employee);
-//            int index = employeesList.indexOf(employee);
-//            employeesList.set(index, employee);
         }
         return new ModelAndView("redirect:/employee/seeAll");
     }
@@ -113,7 +103,6 @@ public class EmployeeController {
     public ModelAndView delete(@ModelAttribute(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
         deleteEmployeeFromDatabase(employee);
-//        employeesList.remove(employee);
         return new ModelAndView("redirect:/employee/seeAll");
     }
 
