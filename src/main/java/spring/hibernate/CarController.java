@@ -36,33 +36,12 @@ public class CarController {
 
         carsList = carsService.getAll();
         employeesList = employeesService.getAll();
-
-//        try {
-////            hibernateDao = new HibernateDao();
-////            DataSource.supplyDatabase();
-////            employeesList = hibernateDao.get(Employees.class);
-////            carsList = hibernateDao.get(Cars.class);
-//        } catch (NullPointerException exception) {
-//            System.out.println("No connection with database");
-//            exception.getMessage();
-//
-//            employeesList = new ArrayList<>();
-//            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
-//            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
-//            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
-//            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
-//
-//            carsList = new ArrayList<>();
-//            Cars car1 = new Cars(employee1, 1, "Fiat", "126p", new Date());
-//            Cars car2 = new Cars(employee2, 2, "Honda", "Civic", new Date());
-//            carsList.addAll(Arrays.asList(car1, car2));
-//        }
     }
 
     @RequestMapping("/seeAll")
     public ModelAndView showCarList(Model model) {
         carsList = carsService.getAll();
-        return new ModelAndView("/all_cars_list", "carsList", carsList);
+        return new ModelAndView("all_cars_list", "carsList", carsList);
     }
 
     @RequestMapping(value = "/getForm", method = RequestMethod.GET)
@@ -70,7 +49,7 @@ public class CarController {
         employeesList = employeesService.getAll();
         model.addAttribute("car", new Cars());
         model.addAttribute("employeesList", employeesList);
-        return "/add_car_form";
+        return "add_car_form";
     }
 
     @RequestMapping(value = "/save")
@@ -103,7 +82,7 @@ public class CarController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
         Cars car = getCarById(Integer.parseInt(car_id));
-        return new ModelAndView("/add_car_form", "car", car);
+        return new ModelAndView("add_car_form", "car", car);
     }
 
     private Cars getCarById(@RequestParam int id) {

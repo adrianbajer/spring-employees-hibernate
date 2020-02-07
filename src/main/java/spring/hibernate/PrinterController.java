@@ -37,37 +37,12 @@ public class PrinterController {
         printersList = printersServiceImpl.getAll();
         employeesList = employeesServiceImpl.getAll();
 
-
-//        try {
-//            hibernateDao = new HibernateDao();
-//            DataSource.supplyDatabase();
-//            employeesList = hibernateDao.get(Employees.class);
-//            printersList = hibernateDao.get(Printers.class);
-//        } catch (NullPointerException exception) {
-//            System.out.println("No connection with database");
-//            exception.getMessage();
-//
-//            employeesList = new ArrayList<>();
-//            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
-//            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
-//            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
-//            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
-//
-//            printersList = new ArrayList<>();
-//            Set<Employees> setForPrinter1 = new HashSet<>(Collections.singletonList(employee1));
-//            Set<Employees> setForPrinter2 = new HashSet<>(Arrays.asList(employee1, employee2, employee3));
-//
-//            Printers printer1 = new Printers(setForPrinter1, 1, "Hewlett Packard", "1234h", true, true);
-//            Printers printer2 = new Printers(2, "EasyJet", "asd", true, false);
-//            Printers printer3 = new Printers(setForPrinter2, 3, "Optimus", "Prime", false, false);
-//            printersList.addAll(Arrays.asList(printer1, printer2, printer3));
-//        }
     }
 
     @RequestMapping("/seeAll")
     public ModelAndView showPrinterList(Model model) {
         printersList = printersServiceImpl.getAll();
-        return new ModelAndView("/all_printers_list", "printersList", printersList);
+        return new ModelAndView("all_printers_list", "printersList", printersList);
     }
 
     @RequestMapping(value = "/getForm", method = RequestMethod.GET)
@@ -76,7 +51,7 @@ public class PrinterController {
         model.addAttribute("printer", new Printers());
         model.addAttribute("employeesList", employeesList);
         model.addAttribute("chosenEmployeesIdsList", new ArrayList<>());
-        return "/add_printer_form";
+        return "add_printer_form";
     }
 
     @RequestMapping(value = "/save")
@@ -117,7 +92,7 @@ public class PrinterController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "printer_id") String printerId) {
         Printers printer = getPrinterById(Integer.parseInt(printerId));
-        return new ModelAndView("/add_printer_form", "printer", printer);
+        return new ModelAndView("add_printer_form", "printer", printer);
     }
 
     private Printers getPrinterById(@RequestParam int id) {

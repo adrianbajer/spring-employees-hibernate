@@ -27,13 +27,13 @@ public class EmployeeController {
     @RequestMapping("/seeAll")
     public ModelAndView showEmployeesList(Model model) {
         employeesList = employeesServiceImpl.getAll();
-        return new ModelAndView("/all_employees_list", "list", employeesList);
+        return new ModelAndView("all_employees_list", "list", employeesList);
     }
 
     @RequestMapping(value = "/getForm", method = RequestMethod.GET)
     public String showForm(Model model) {
         model.addAttribute("employee", new Employees());
-        return "/add_employee_form";
+        return "add_employee_form";
     }
 
     @RequestMapping(value = "/save")
@@ -62,7 +62,7 @@ public class EmployeeController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView edit(@RequestParam(value = "employee_id") String employee_id) {
         Employees employee = getEmployeesById(Integer.parseInt(employee_id));
-        return new ModelAndView("/add_employee_form", "employee", employee);
+        return new ModelAndView("add_employee_form", "employee", employee);
     }
 
 
