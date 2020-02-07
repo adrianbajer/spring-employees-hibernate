@@ -16,7 +16,6 @@ public class Employees implements HibernateEntity {
 
     // usunięcie pracownika spowoduje usunięcie samochodu
     @OneToMany(mappedBy = "employees", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-//    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER)
 //    @OneToMany(mappedBy = "employees", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @ToString.Exclude // żeby nie wywalało stackoverflow exception
     @EqualsAndHashCode.Exclude // samochód nie decyduje o tym że to inna osoba
@@ -107,7 +106,7 @@ public class Employees implements HibernateEntity {
         printer.getEmployeesSet().add(this);
     }
 
-    public void removeTag(Printers printer) {
+    public void removePrinter(Printers printer) {
         printersSet.remove(printer);
         printer.getEmployeesSet().remove(this);
     }
