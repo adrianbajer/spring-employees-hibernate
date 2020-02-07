@@ -28,7 +28,7 @@ public class IndexController {
 
     @RequestMapping("/")
     public String indexGet() {
-        return "/index";
+        return "index";
     }
 
     @Transactional
@@ -100,7 +100,7 @@ public class IndexController {
             entityManager.persist(printer);
         }
 
-        return "/index";
+        return "index";
     }
 
 }
