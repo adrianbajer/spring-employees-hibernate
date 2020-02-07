@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -63,7 +64,7 @@ public class Employees implements HibernateEntity {
     @NonNull
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @EqualsAndHashCode.Exclude // żeby móc sprawdzić czy nie jest dodawany taki sam pracownik tylko z nową datą
-    private Date startJobDate;
+    private LocalDate startJobDate;
 
     @Column(name = "Benefit")
     @NonNull
@@ -75,7 +76,20 @@ public class Employees implements HibernateEntity {
     @Setter
     private String email;
 
-    public Employees(String firstName, String lastName, String address, String city, int salary, int age, Date startJobDate, int benefit, String email) {
+    public Employees(String firstName, String lastName, String address, String city, int salary, int age, LocalDate startJobDate, int benefit, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.salary = salary;
+        this.age = age;
+        this.startJobDate = startJobDate;
+        this.benefit = benefit;
+        this.email = email;
+    }
+
+    public Employees(int id, String firstName, String lastName, String address, String city, int salary, int age, LocalDate startJobDate, int benefit, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -108,7 +122,7 @@ public class Employees implements HibernateEntity {
     public Employees() {
     }
 
-    public Employees(int id, String firstName, String lastName, String address, String city, int age, int salary, Date startJobDate, int benefit) {
+    public Employees(int id, String firstName, String lastName, String address, String city, int age, int salary, LocalDate startJobDate, int benefit) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

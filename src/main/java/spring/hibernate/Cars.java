@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 //    Grupa 2 tworzy repozytorium publiczne na githubie i daje dostęp swojemu partnerowi/partnerce
 //    Grupa 1 na zajęcia 25.01 Przepina nasz projekt na encje hibernate
@@ -42,7 +42,7 @@ public class Cars implements HibernateEntity {
     @Column(name = "RegistrationDate")
     @NonNull
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private Date registrationDate;
+    private LocalDate registrationDate;
 
 
     public Cars() {

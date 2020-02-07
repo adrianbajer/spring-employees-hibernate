@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import spring.services.EmployeesServiceImpl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -21,49 +20,8 @@ public class EmployeeController {
     private EmployeesServiceImpl employeesServiceImpl;
 
     public EmployeeController(EmployeesServiceImpl employeesServiceImpl) {
-
         this.employeesServiceImpl = employeesServiceImpl;
         employeesList = employeesServiceImpl.getAll();
-
-//        employeesList = employeesService.getAll();
-//        System.out.println(employeesList.size());
-
-
-//        DataSourceJpa.supplyDatabase(employeesRepository);
-
-
-//        try {
-//
-////            hibernateDao = new HibernateDao();
-////            DataSource.supplyDatabase();
-////            DataSourceJpa.supplyDatabase(carsRepository, employeesRepository);
-////            System.out.println(employeesRepository.findOne(1));
-//
-////            int i = 0;
-////            employeesRepository.findAll().forEach();
-////            for(Employees employees : employeesList){
-////                System.out.println(employees.toString());
-////            }
-////            for (Employees employees : employeesRepository.findAll()){
-//////                System.out.println(employees.toString());
-////                employeesList.add(employees);
-////                System.out.println(i);
-////                i++;
-////            }
-//            employeesList = employeesRepository.findAll();
-//            System.out.println(employeesList);
-//
-//
-//
-//        } catch (NullPointerException exception) {
-//            System.out.println("No connection with database");
-//            exception.getMessage();
-//            employeesList = new ArrayList<>();
-//            Employees employee1 = new Employees(1, "Adam", "Kowalski", "Piękna 3/13", "Warszawa", 1000, 18, new Date(), 1);
-//            Employees employee2 = new Employees(2, "Rafał", "Nowak", "gen. Maczka 3/13", "Kraków", 2000, 23, new Date(), 0);
-//            Employees employee3 = new Employees(3, "Tomek", "Barbara", "gen. Maczka 3/13", "Kielce", 3000, 27, new Date(), 1);
-//            employeesList.addAll(Arrays.asList(employee1, employee2, employee3));
-//        }
     }
 
     @RequestMapping("/seeAll")
@@ -82,14 +40,9 @@ public class EmployeeController {
     public ModelAndView save(@ModelAttribute(value = "employee") Employees employee,
                              @RequestParam(value = "date") String date) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date dateParsed = format.parse(date);
-            employee.setStartJobDate(dateParsed);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            employee.setStartJobDate(new Date());
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateParsed = LocalDate.parse(date, formatter);
+        employee.setStartJobDate(dateParsed);
 
         if (employee.getId() == 0) {
             addEmployeeToDatabase(employee);

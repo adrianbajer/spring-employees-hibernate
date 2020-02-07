@@ -11,9 +11,8 @@ import spring.services.CarsServiceImpl;
 import spring.services.EmployeesService;
 import spring.services.EmployeesServiceImpl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -82,14 +81,9 @@ public class CarController {
         Employees employeeToSet = employeesList.stream().filter(f -> f.getId() == idAsInt).findFirst().get();
         car.setEmployees(employeeToSet);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date dateParsed = format.parse(date);
-            car.setRegistrationDate(dateParsed);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            car.setRegistrationDate(new Date());
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateParsed = LocalDate.parse(date, formatter);
+        car.setRegistrationDate(dateParsed);
 
         if (car.getId() == 0) {
             addCarToDatabase(car);
