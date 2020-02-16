@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Printers implements HibernateEntity {
 
-    //info o join table musi być w printers bo inaczej tabela employees-printers nie wypełnia się danymi
+    // join table annotation needs to be here, otherwise the employee_printer table won't fill with data
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "Employees_Printers",
             joinColumns = {@JoinColumn(name = "printerId", referencedColumnName = "ID")},
@@ -43,17 +43,6 @@ public class Printers implements HibernateEntity {
     @Column(name = "Laser")
     @NonNull
     private Boolean isLaser;
-
-    // zgodnie z tym co znalazłam online trzeba dodać takie metody
-    public void addEmployee(Employees employee) {
-        employeesSet.add(employee);
-        employee.getPrintersSet().add(this);
-    }
-
-    public void removeEmployee(Employees employee) {
-        employeesSet.remove(employee);
-        employee.getPrintersSet().remove(this);
-    }
 
     public Set<Employees> getEmployeesSet() {
         if (employeesSet == null) {

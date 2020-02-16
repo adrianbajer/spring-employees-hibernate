@@ -86,9 +86,13 @@ public class PrinterController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ModelAndView edit(@RequestParam(value = "printer_id") String printerId) {
+    public ModelAndView edit(@RequestParam(value = "printer_id") String printerId, Model model) {
         Printers printer = getPrinterById(Integer.parseInt(printerId));
-        return new ModelAndView("add_printer_form", "printer", printer);
+        employeesList = employeesServiceImpl.getAll();
+        model.addAttribute("printer", printer);
+        model.addAttribute("employeesList", employeesList);
+        model.addAttribute("chosenEmployeesIdsList", new ArrayList<>());
+        return new ModelAndView("add_printer_form");
     }
 
     private Printers getPrinterById(@RequestParam int id) {
