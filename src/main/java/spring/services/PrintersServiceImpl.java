@@ -1,8 +1,7 @@
 package spring.services;
 
 import org.springframework.stereotype.Service;
-import spring.hibernate.Employees;
-import spring.hibernate.Printers;
+import spring.model.Printers;
 import spring.repository.PrintersRepository;
 
 import java.util.List;

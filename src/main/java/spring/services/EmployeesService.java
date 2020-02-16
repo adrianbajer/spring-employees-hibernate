@@ -1,6 +1,6 @@
 package spring.services;
 
-import spring.hibernate.Employees;
+import spring.model.Employees;
 
 import java.util.List;
 

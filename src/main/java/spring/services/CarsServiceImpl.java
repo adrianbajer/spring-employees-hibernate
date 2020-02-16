@@ -1,7 +1,7 @@
 package spring.services;
 
 import org.springframework.stereotype.Service;
-import spring.hibernate.Cars;
+import spring.model.Cars;
 import spring.repository.CarsRepository;
 
 import java.util.List;

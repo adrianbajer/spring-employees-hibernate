@@ -1,6 +1,6 @@
 package spring.services;
 
-import spring.hibernate.Printers;
+import spring.model.Printers;
 
 import java.util.List;
 

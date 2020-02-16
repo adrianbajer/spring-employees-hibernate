@@ -1,4 +1,4 @@
-package spring.hibernate;
+package spring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import spring.model.Employees;
+import spring.model.Printers;
 import spring.services.EmployeesServiceImpl;
 import spring.services.PrintersServiceImpl;
 
@@ -22,12 +24,6 @@ public class PrinterController {
     private List<Employees> employeesList;
     private PrintersServiceImpl printersServiceImpl;
     private EmployeesServiceImpl employeesServiceImpl;
-
-    //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
-    // @ManyToMany oraz dorobić do niej odpowiedni formularz.
-    //Dodaje przycisk który umożliwi przywrócenie bazy danych do punktu początkowego oraz wystawia aplikacje na heroku.
-    // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
-    // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
 
     public PrinterController(PrintersServiceImpl printersServiceImpl, EmployeesServiceImpl employeesServiceImpl) {
 

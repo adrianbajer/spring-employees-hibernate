@@ -1,14 +1,10 @@
-package spring.hibernate;
+package spring.model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-
-//    Grupa 2 tworzy repozytorium publiczne na githubie i daje dostęp swojemu partnerowi/partnerce
-//    Grupa 1 na zajęcia 25.01 Przepina nasz projekt na encje hibernate
-//    Grupa 2 Dodaje mapowanie dla tabeli Cars z adnotacją @OneToMany
 
 
 @Entity

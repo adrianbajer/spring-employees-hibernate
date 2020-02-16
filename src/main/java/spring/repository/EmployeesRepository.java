@@ -2,7 +2,7 @@ package spring.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import spring.hibernate.Employees;
+import spring.model.Employees;
 
 import java.util.List;
 

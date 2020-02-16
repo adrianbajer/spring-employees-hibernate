@@ -1,9 +1,12 @@
-package spring.hibernate;
+package spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import spring.model.Cars;
+import spring.model.Employees;
+import spring.model.Printers;
 import spring.services.CarsServiceImpl;
 import spring.services.EmployeesServiceImpl;
 import spring.services.PrintersServiceImpl;

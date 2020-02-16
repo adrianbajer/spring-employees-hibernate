@@ -1,4 +1,4 @@
-package spring.hibernate;
+package spring.model;
 
 public interface HibernateEntity {
 

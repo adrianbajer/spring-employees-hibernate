@@ -1,4 +1,4 @@
-package spring.hibernate;
+package spring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import spring.model.Cars;
+import spring.model.Employees;
 import spring.services.CarsServiceImpl;
 import spring.services.EmployeesService;
 import spring.services.EmployeesServiceImpl;
@@ -22,12 +24,6 @@ public class CarController {
     private List<Employees> employeesList;
     private CarsServiceImpl carsService;
     private EmployeesService employeesService;
-
-    //Grupa 1. Ma za zadanie klasę dodać klasę, która będzie obsługiwała przypisane do pracownika drukarki z adnotacją
-    // @ManyToMany oraz dorobić do niej odpowiedni formularz.
-    //Dodaje przycisk który umożliwi przywrócenie bazy danych do punktu początkowego oraz wystawia aplikacje na heroku.
-    // Grupa 2. Przepina projekt na jparepository/crudrepository oraz tworzy zdalną bazę danych, którą podpina do projektu.
-    // Czas do 9.02. Sposób oddania to wysłanie linku do wspólnego repozytorium oraz linku do działającej aplikacji
 
     public CarController(CarsServiceImpl carsService ,EmployeesServiceImpl employeesService) {
 
@@ -80,9 +76,12 @@ public class CarController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ModelAndView edit(@RequestParam(value = "car_id") String car_id) {
+    public ModelAndView edit(@RequestParam(value = "car_id") String car_id, Model model) {
+        employeesList = employeesService.getAll();
         Cars car = getCarById(Integer.parseInt(car_id));
-        return new ModelAndView("add_car_form", "car", car);
+        model.addAttribute("car", car);
+        model.addAttribute("employeesList", employeesList);
+        return new ModelAndView("add_car_form");
     }
 
     private Cars getCarById(@RequestParam int id) {

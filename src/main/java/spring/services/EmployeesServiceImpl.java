@@ -2,8 +2,8 @@ package spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spring.hibernate.Employees;
-import spring.hibernate.Printers;
+import spring.model.Employees;
+import spring.model.Printers;
 import spring.repository.EmployeesRepository;
 
 import javax.persistence.EntityManager;
